@@ -1,0 +1,129 @@
+import sharp from 'sharp';
+import fs from 'fs';
+import path from 'path';
+
+// Refined SVG capturing the exact calligraphy style of "乃文有限公司"
+const svg = `
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 620 95" width="1240" height="190">
+  <defs>
+    <filter id="crisp-shadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="1" stdDeviation="0.8" flood-color="#091b40" flood-opacity="0.4"/>
+    </filter>
+  </defs>
+  
+  <!-- Solid Brand Navy Background matching the uploaded image (#19376D / #1b3576) -->
+  <rect width="620" height="95" fill="#1b367d" rx="2" />
+  
+  <!-- White Calligraphy Strokes "乃文有限公司" -->
+  <g fill="#ffffff" filter="url(#crisp-shadow)">
+    <!-- 乃 -->
+    <g transform="translate(14, 4)">
+      <path d="M 24 23 C 32 19 46 16 58 15 C 67 14 74 18 70 26 C 65 33 50 44 40 52 C 32 59 26 67 29 73 C 33 78 42 76 52 67 C 56 63 59 57 61 51 C 62 48 66 49 65 53 C 60 65 50 78 37 81 C 26 83 18 76 21 63 C 24 52 32 42 43 33 C 51 26 57 21 49 21 C 39 21 28 25 21 29 C 18 30 16 26 24 23 Z"/>
+      <path d="M 59 27 C 64 27 72 29 76 33 C 81 38 81 50 77 61 C 72 73 62 82 53 87 C 50 89 48 85 52 82 C 62 73 70 61 71 50 C 72 41 68 34 60 33 C 55 32 53 28 59 27 Z"/>
+    </g>
+
+    <!-- 文 -->
+    <g transform="translate(118, 2)">
+      <!-- Top slanted dot -->
+      <path d="M 46 12 C 54 15 62 22 57 29 C 53 33 46 32 44 26 C 41 20 42 14 46 12 Z"/>
+      <!-- Dynamic horizontal bar -->
+      <path d="M 12 34 C 29 30 55 27 84 26 C 91 26 94 31 87 33 C 69 38 42 42 17 44 C 9 44 8 37 12 34 Z"/>
+      <!-- Left sweep -->
+      <path d="M 55 34 C 54 46 45 61 31 74 C 23 81 13 87 8 89 C 5 91 4 87 8 83 C 19 75 33 59 40 42 C 43 36 49 35 55 34 Z"/>
+      <!-- Right sweep -->
+      <path d="M 37 43 C 44 50 56 62 69 72 C 78 79 89 84 98 86 C 102 86 102 88 97 90 C 85 91 71 85 59 74 C 48 64 38 53 33 45 C 32 42 34 41 37 43 Z"/>
+    </g>
+
+    <!-- 有 -->
+    <g transform="translate(232, 4)">
+      <!-- Top sweeping hook -->
+      <path d="M 10 24 C 29 21 56 16 83 15 C 91 15 93 20 85 24 C 67 29 39 33 14 34 C 7 34 6 27 10 24 Z"/>
+      <!-- Left diagonal curve -->
+      <path d="M 47 18 C 47 34 41 55 28 70 C 20 80 11 86 6 88 C 4 89 3 87 7 82 C 17 72 28 54 33 34 C 36 24 42 20 47 18 Z"/>
+      <!-- 月 radical: left side -->
+      <path d="M 38 41 C 41 53 40 66 37 81 C 36 84 40 84 42 82 C 46 75 47 62 46 48 C 46 41 41 39 38 41 Z"/>
+      <!-- 月 radical: right hook -->
+      <path d="M 42 43 C 53 39 66 35 75 34 C 80 33 82 36 81 44 C 77 59 76 70 76 80 C 76 84 71 87 67 82 C 65 78 66 72 67 64 C 70 49 70 43 65 43 C 58 44 48 47 42 49 Z"/>
+      <!-- Inner horizontal strokes -->
+      <path d="M 42 56 C 52 53 64 51 72 50 C 76 50 76 52 71 55 C 62 57 52 60 42 61 Z"/>
+      <path d="M 41 68 C 50 66 62 63 70 62 C 74 62 74 64 69 67 C 60 69 51 71 41 73 Z"/>
+    </g>
+
+    <!-- 限 -->
+    <g transform="translate(336, 3)">
+      <!-- Left 阝 (Ear) -->
+      <path d="M 15 24 C 22 22 32 18 38 20 C 43 21 43 27 38 31 C 33 34 27 35 26 39 C 25 43 33 42 38 45 C 43 50 42 59 36 65 C 30 70 22 71 17 71 C 13 71 16 67 21 65 C 30 60 32 53 28 48 C 25 44 17 44 15 41 C 12 36 12 27 15 24 Z"/>
+      <path d="M 21 29 C 22 44 21 63 18 82 C 17 89 21 89 23 84 C 27 70 28 51 27 34 C 27 28 21 26 21 29 Z"/>
+      
+      <!-- Right 艮 -->
+      <path d="M 46 28 C 59 24 73 21 86 20 C 92 19 93 23 89 30 C 86 34 78 37 59 41 C 51 42 46 38 46 28 Z"/>
+      <path d="M 54 32 C 56 44 54 58 50 71 C 48 77 51 77 55 74 C 60 66 61 54 60 42 C 60 34 54 31 54 32 Z"/>
+      <path d="M 56 42 C 66 39 77 37 87 36 C 92 35 93 38 90 42 C 81 45 69 48 58 50 Z"/>
+      <path d="M 55 54 C 65 52 75 49 83 48 C 88 47 89 51 86 53 C 77 57 66 59 55 62 Z"/>
+      <path d="M 59 56 C 65 56 71 55 75 58 C 78 61 76 70 73 77 C 71 83 77 83 83 78 C 89 73 94 66 96 60 C 98 59 101 61 98 65 C 94 76 84 87 73 88 C 63 90 60 83 62 73 C 65 65 66 60 59 60 Z"/>
+      <path d="M 52 66 C 49 73 43 81 35 86 C 32 88 31 86 34 82 C 40 77 46 70 49 62 C 50 60 53 62 52 66 Z"/>
+    </g>
+
+    <!-- 公 -->
+    <g transform="translate(455, 4)">
+      <!-- Top left slant -->
+      <path d="M 34 17 C 28 22 20 32 15 39 C 12 43 10 42 12 38 C 18 30 28 20 36 14 C 39 11 40 14 34 17 Z"/>
+      <!-- Top right slant -->
+      <path d="M 51 14 C 60 17 70 25 76 33 C 80 38 77 42 73 39 C 66 32 57 23 50 17 C 48 15 49 12 51 14 Z"/>
+      <!-- Bottom 厶 loop -->
+      <path d="M 40 37 C 38 44 29 55 21 65 C 16 70 17 74 25 74 C 38 74 56 69 71 64 C 77 62 78 65 73 69 C 56 76 33 82 20 81 C 10 81 7 73 13 64 C 22 53 32 40 36 33 C 38 30 42 32 40 37 Z"/>
+      <!-- Right dot -->
+      <path d="M 54 47 C 61 50 70 58 66 65 C 62 69 56 66 53 60 C 50 54 51 48 54 47 Z"/>
+    </g>
+
+    <!-- 司 -->
+    <g transform="translate(535, 2)">
+      <!-- Top horizontal & right fold (冂) -->
+      <path d="M 15 26 C 34 21 59 16 78 15 C 87 14 90 18 87 27 C 82 44 80 64 80 78 C 80 86 74 88 69 82 C 65 77 69 71 70 62 C 72 47 73 31 67 29 C 54 32 34 36 18 39 C 12 40 10 34 15 26 Z"/>
+      <path d="M 17 32 C 21 47 21 65 17 81 C 16 87 20 87 22 82 C 27 70 28 51 26 35 C 26 29 20 27 17 32 Z"/>
+      <!-- Inner horizontal bar -->
+      <path d="M 27 42 C 38 38 50 36 61 34 C 66 33 67 37 62 39 C 52 43 39 45 28 48 Z"/>
+      <!-- Inner 口 box -->
+      <path d="M 28 55 C 39 51 51 48 60 47 C 65 46 66 49 64 55 C 60 64 59 70 58 76 C 58 80 53 80 50 76 C 49 72 50 67 51 60 C 53 55 48 56 42 57 C 37 59 31 60 27 61 Z"/>
+      <path d="M 29 56 C 32 64 32 71 29 78 C 28 82 31 82 33 80 C 38 73 39 66 38 59 Z"/>
+      <path d="M 32 76 C 39 73 48 71 56 68 C 60 67 61 69 58 72 C 49 76 40 78 32 81 Z"/>
+    </g>
+  </g>
+</svg>
+`;
+
+async function main() {
+  const publicDir = path.resolve('public');
+  const imagesDir = path.resolve('public/assets/images');
+  const distImagesDir = path.resolve('dist/assets/images');
+  
+  if (!fs.existsSync(publicDir)) fs.mkdirSync(publicDir, { recursive: true });
+  if (!fs.existsSync(imagesDir)) fs.mkdirSync(imagesDir, { recursive: true });
+  if (!fs.existsSync(distImagesDir)) fs.mkdirSync(distImagesDir, { recursive: true });
+
+  const svgBuffer = Buffer.from(svg.trim());
+
+  // Save SVG files
+  fs.writeFileSync(path.resolve('public/logo.svg'), svgBuffer);
+  fs.writeFileSync(path.resolve('public/assets/images/logo.svg'), svgBuffer);
+  fs.writeFileSync(path.resolve('logo.svg'), svgBuffer);
+
+  // Generate high-res PNG (matching aspect ratio ~6.5:1 and crispness)
+  const pngBuffer = await sharp(svgBuffer, { density: 300 })
+    .resize(620, 95, { fit: 'contain', background: { r: 27, g: 54, b: 125, alpha: 1 } })
+    .png({ quality: 100 })
+    .toBuffer();
+
+  fs.writeFileSync(path.resolve('public/logo.png'), pngBuffer);
+  fs.writeFileSync(path.resolve('public/assets/images/logo.png'), pngBuffer);
+  fs.writeFileSync(path.resolve('logo.png'), pngBuffer);
+  if (fs.existsSync(path.resolve('dist'))) {
+    fs.writeFileSync(path.resolve('dist/logo.png'), pngBuffer);
+    fs.writeFileSync(path.resolve('dist/assets/images/logo.png'), pngBuffer);
+    fs.writeFileSync(path.resolve('dist/logo.svg'), svgBuffer);
+  }
+
+  console.log('High-fidelity logo generated successfully!');
+}
+
+main().catch(console.error);

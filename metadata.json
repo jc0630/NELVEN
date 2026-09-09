@@ -1,0 +1,6 @@
+{
+  "name": "乃文有限公司 NELVEN",
+  "description": "乃文有限公司官方網站 — 毒化災應變、軍警反恐偵查與消防安全設備專業代理與系統整合",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
