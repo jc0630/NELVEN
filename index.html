@@ -25,15 +25,16 @@
   --border: #E2E8F0;          /* Clean structured border */
   --border-dark: #CBD5E1;
 
-  /* Precision Tech Radius Design (Zero Radius) */
+  /* Precision Square Design */
   --radius-sm: 0px;
   --radius-md: 0px;
   --radius-lg: 0px;
 
   --maxw: 1200px;
-  --shadow-sm: 0 2px 8px rgba(30,58,138,0.06);
-  --shadow-md: 0 12px 32px rgba(30,58,138,0.08);
-  --shadow-lg: 0 24px 48px rgba(30,58,138,0.12);
+  /* Enhanced Shadows for depth */
+  --shadow-sm: 0 6px 16px rgba(15,23,42,0.06), 0 2px 4px rgba(15,23,42,0.03);
+  --shadow-md: 0 12px 32px rgba(15,23,42,0.08), 0 4px 12px rgba(15,23,42,0.04);
+  --shadow-lg: 0 24px 48px rgba(15,23,42,0.12), 0 8px 24px rgba(15,23,42,0.06);
   --ease: cubic-bezier(.16, 1, .3, 1);
   --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
@@ -47,7 +48,14 @@ body {
   margin: 0;
   font-family: "Noto Sans TC", "IBM Plex Sans", "Segoe UI", Arial, sans-serif;
   color: var(--gray);
-  background: var(--white);
+  background-color: #F8FAFC;
+  background-image: 
+    /* Distinct Ambient Mesh Glow */
+    radial-gradient(circle at 15% 15%, rgba(219, 234, 254, 0.9) 0%, transparent 40%),
+    radial-gradient(circle at 85% 85%, rgba(191, 219, 254, 0.7) 0%, transparent 40%),
+    radial-gradient(circle at 50% 50%, rgba(226, 232, 240, 0.5) 0%, transparent 60%);
+  background-size: 100vw 100vh;
+  background-attachment: fixed;
   line-height: 1.75;
   -webkit-font-smoothing: antialiased;
 }
@@ -132,7 +140,7 @@ nav.main-nav { display: flex; align-items: center; gap: 2px; }
 .nav-item .dropdown-menu {
   border-radius: var(--radius-md); overflow: hidden;
   position: absolute; top: 100%; left: 0; min-width: 250px;
-  background: #ffffff; border: 1px solid var(--border); box-shadow: var(--shadow-md);
+  background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.6); box-shadow: var(--shadow-md);
   opacity: 0; visibility: hidden; transform: translateY(6px);
   transition: opacity .2s var(--ease), transform .2s var(--ease), visibility .2s;
   z-index: 1000;
@@ -147,7 +155,7 @@ nav.main-nav { display: flex; align-items: center; gap: 2px; }
 .dropdown-link {
   display: flex; align-items: center; justify-content: space-between;
   padding: 12px 18px; font-size: 14px; font-weight: 600; color: var(--blue-deep);
-  border-bottom: 1px solid var(--border); background: #ffffff;
+  border-bottom: 1px solid var(--border); background: transparent;
   transition: background-color .15s ease, color .15s ease;
   cursor: pointer;
 }
@@ -163,7 +171,7 @@ nav.main-nav { display: flex; align-items: center; gap: 2px; }
 .dropdown-sub {
   border-radius: var(--radius-md); overflow: hidden;
   position: absolute; top: -1px; left: 100%; min-width: 220px;
-  background: #ffffff; border: 1px solid var(--border); box-shadow: var(--shadow-md);
+  background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.6); box-shadow: var(--shadow-md);
   opacity: 0; visibility: hidden; transform: translateX(6px);
   transition: opacity .2s var(--ease), transform .2s var(--ease), visibility .2s;
 }
@@ -291,7 +299,7 @@ nav.main-nav { display: flex; align-items: center; gap: 2px; }
    ========================================================= */
 section.block { padding: 84px 0; }
 section.block.tight { padding: 56px 0; }
-section.block.alt { background: var(--white-cool); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+section.block.alt { background: linear-gradient(180deg, rgba(248,250,252,0) 0%, rgba(248,250,252,0.6) 20%, rgba(248,250,252,0.6) 80%, rgba(248,250,252,0) 100%); border-top: none; border-bottom: none; }
 .section-head { max-width: 680px; margin: 0 auto 48px; text-align: center; }
 .section-eyebrow { font-size: 13px; font-weight: 700; letter-spacing: .06em; color: var(--blue-brand); margin-bottom: 8px; text-transform: uppercase; }
 .section-head h2 { font-size: 30px; color: var(--blue-deep); }
@@ -313,13 +321,6 @@ section.block.alt { background: var(--white-cool); border-top: 1px solid var(--b
 }
 .img-box:hover img { transform: scale(1.04); }
 
-.img-badge {
-  border-radius: var(--radius-sm);
-  position: absolute; top: 12px; left: 12px; z-index: 2;
-  background: rgba(10, 42, 71, 0.9); color: #ffffff; font-size: 12px; font-weight: 700;
-  padding: 4px 10px; border-left: 3px solid var(--blue-light); letter-spacing: .03em;
-}
-
 /* =========================================================
    CARDS (SERVICES, PRODUCTS, CASES)
    ========================================================= */
@@ -327,9 +328,10 @@ section.block.alt { background: var(--white-cool); border-top: 1px solid var(--b
 .service-card-v2 {
   border-radius: var(--radius-lg);
   position: relative;
-  background: #ffffff;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
   padding: 44px 32px;
-  border: 1px solid var(--border);
+  border: 1px solid rgba(255,255,255,0.6);
   box-shadow: var(--shadow-sm);
   display: flex;
   flex-direction: column;
@@ -424,7 +426,7 @@ section.block.alt { background: var(--white-cool); border-top: 1px solid var(--b
 .flip-face {
   grid-area: 1 / 1;
   backface-visibility: hidden; padding: 28px;
-  display: flex; flex-direction: column; border: 1px solid var(--border); background: #ffffff; box-shadow: var(--shadow-sm); border-radius: 0;
+  display: flex; flex-direction: column; border: 1px solid var(--border); background: #ffffff; box-shadow: var(--shadow-sm); border-radius: var(--radius-lg);
 }
 .flip-face.front {
   background-size: cover; background-position: center; position: relative;
@@ -449,7 +451,7 @@ section.block.alt { background: var(--white-cool); border-top: 1px solid var(--b
 /* Arrow Card (Photo Header + Description + Action) */
 .arrow-card {
   border-radius: var(--radius-lg);
-  display: flex; flex-direction: column; border: 1px solid var(--border); background: #ffffff;
+  display: flex; flex-direction: column; border: 1px solid rgba(255,255,255,0.6); background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px);
   box-shadow: var(--shadow-sm); transition: border-color .2s var(--ease), box-shadow .2s var(--ease), transform .2s ease;
   cursor: pointer; overflow: hidden;
 }
@@ -464,18 +466,43 @@ section.block.alt { background: var(--white-cool); border-top: 1px solid var(--b
 .arrow-card .go svg { transition: transform .2s var(--ease); }
 .arrow-card:hover .go svg { transform: translateX(4px); }
 
+/* Product Detail Layout */
+.product-detail-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: flex-start;
+}
+.pd-left { position: relative; }
+.pd-img-wrap {
+  border-radius: var(--radius-lg); background: rgba(255,255,255,0.85); backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.6); box-shadow: var(--shadow-md);
+  padding: 12px;
+}
+.pd-img-wrap img { border-radius: var(--radius-md); }
+.pd-content-box {
+  background: rgba(255,255,255,0.85); backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.6); box-shadow: var(--shadow-sm);
+  border-radius: var(--radius-lg); padding: 32px;
+}
+.pd-feature-item {
+  display: flex; align-items: flex-start; gap: 12px; margin-bottom: 16px;
+  font-size: 14.5px; color: var(--gray-dark); font-weight: 500;
+}
+.pd-feature-item svg { width: 20px; height: 20px; color: var(--blue-brand); flex-shrink: 0; margin-top: 2px; }
+
 /* Product Card with Photo Thumbnail */
 .product-card {
   border-radius: var(--radius-lg);
-  display: block; border: 1px solid var(--border); background: #ffffff;
-  transition: border-color .2s var(--ease), box-shadow .2s var(--ease), transform .2s ease;
+  display: block; border: 1px solid rgba(255,255,255,0.6); background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px);
+  box-shadow: var(--shadow-sm); transition: border-color .2s var(--ease), box-shadow .2s var(--ease), transform .2s ease;
   cursor: pointer; overflow: hidden;
 }
 .product-card:hover { border-color: var(--blue-brand); box-shadow: var(--shadow-md); transform: translateY(-3px); }
 .product-card .thumb { aspect-ratio: 4/3; position: relative; overflow: hidden; background: var(--blue-verylight); border-bottom: 1px solid var(--border); }
 .product-card .thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s var(--ease); }
 .product-card:hover .thumb img { transform: scale(1.06); }
-.product-card .body { padding: 18px 20px; display: flex; align-items: center; justify-content: space-between; gap: 10px; background: #ffffff; }
+.product-card .body { padding: 18px 20px; display: flex; align-items: center; justify-content: space-between; gap: 10px; background: transparent; }
 .product-card h3 { font-size: 15.5px; color: var(--blue-deep); }
 .product-card svg { width: 16px; height: 16px; color: var(--blue-brand); flex-shrink: 0; transition: transform .2s var(--ease); }
 .product-card:hover svg { transform: translateX(4px); }
@@ -527,7 +554,7 @@ section.block.alt { background: var(--white-cool); border-top: 1px solid var(--b
 .process-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; position: relative; }
 @media(max-width: 860px){ .process-row { grid-template-columns: 1fr; } }
 .process-step {
-  border-radius: var(--radius-md); position: relative; background: #ffffff; border: 1px solid var(--border); padding: 28px 20px; text-align: center; }
+  border-radius: var(--radius-md); position: relative; background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.6); box-shadow: var(--shadow-sm); padding: 28px 20px; text-align: center; }
 .process-step .step-num {
   border-radius: 50%;
   width: 36px; height: 36px; background: var(--blue-brand); color: #ffffff;
@@ -552,10 +579,10 @@ section.block.alt { background: var(--white-cool); border-top: 1px solid var(--b
 @media (max-width: 991px) { .company-overview-layout { flex-direction: column; gap: 60px; } }
 .co-img-wrap { flex: 0 0 45%; position: relative; z-index: 1; padding-left: 30px; padding-bottom: 30px; }
 @media (max-width: 991px) { .co-img-wrap { width: 100%; max-width: 500px; padding-left: 20px; padding-bottom: 20px; } }
-.co-img-bg { position: absolute; top: 30px; bottom: 0; left: 0; width: calc(100% - 30px); background-color: var(--blue-brand); z-index: -1; }
+.co-img-bg { position: absolute; top: 30px; bottom: 0; left: 0; width: calc(100% - 30px); background-color: var(--blue-brand); border-radius: var(--radius-lg); z-index: -1; }
 @media (max-width: 991px) { .co-img-bg { top: 20px; width: calc(100% - 20px); } }
 .co-img-wrap img {
-  border-radius: var(--radius-lg); width: 100%; height: auto; aspect-ratio: 3 / 4; object-fit: cover; display: block; box-shadow: var(--shadow-sm); border-radius: 0; }
+  border-radius: var(--radius-lg); width: 100%; height: auto; aspect-ratio: 3 / 4; object-fit: cover; display: block; box-shadow: var(--shadow-md); }
 .co-content { flex: 1; }
 .co-title { font-size: 32px; font-weight: 700; color: var(--blue-deep); text-align: center; margin-bottom: 12px; letter-spacing: 2px; }
 @media (max-width: 767px) { .co-title { font-size: 26px; } }
@@ -568,7 +595,7 @@ section.block.alt { background: var(--white-cool); border-top: 1px solid var(--b
 .co-text p:last-child { margin-bottom: 0; }
 
 /* Year-based Milestones (Image 2 Style Vertical Timeline) */
-.timeline-section { background-color: var(--white-cool); color: var(--blue-deep); padding: 100px 0; overflow: hidden; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.timeline-section { background: linear-gradient(180deg, rgba(248,250,252,0) 0%, rgba(248,250,252,0.8) 20%, rgba(248,250,252,0.8) 80%, rgba(248,250,252,0) 100%); color: var(--blue-deep); padding: 100px 0; overflow: hidden; border: none; }
 .vt-container { max-width: 800px; margin: 0 auto; }
 .vertical-timeline { position: relative; padding: 20px 0; }
 .vertical-timeline::before { content: ""; position: absolute; top: 0; bottom: 0; left: 9px; border-left: 2px dashed rgba(37,99,235,0.2); }
@@ -631,7 +658,6 @@ section.block.alt { background: var(--white-cool); border-top: 1px solid var(--b
   border: 1px solid var(--border);
   background: #ffffff;
   box-shadow: var(--shadow-sm);
-  border-radius: 0;
   overflow: hidden;
 }
 .client-face.front {
@@ -743,8 +769,10 @@ section.block.alt { background: var(--white-cool); border-top: 1px solid var(--b
    ========================================================= */
 .contact-info-block {
   border-radius: var(--radius-lg);
-  background: #ffffff;
-  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.6);
+  box-shadow: var(--shadow-sm);
   padding: 36px;
   opacity: 0;
   transform: translateY(30px);
@@ -825,8 +853,10 @@ section.block.alt { background: var(--white-cool); border-top: 1px solid var(--b
 
 .form-card {
   border-radius: var(--radius-lg);
-  background: #ffffff;
-  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.6);
+  box-shadow: var(--shadow-sm);
   padding: 36px;
   opacity: 0;
   transform: translateY(30px);
@@ -969,12 +999,21 @@ section.block.alt { background: var(--white-cool); border-top: 1px solid var(--b
 
 /* CTA Band */
 .cta-band {
+  margin: 0;
+  border-radius: 0;
   background: linear-gradient(135deg, var(--blue-deep) 0%, var(--blue-brand) 100%);
-  color: #ffffff; padding: 64px 0; text-align: center;
+  color: #ffffff; padding: 80px 20px; text-align: center;
+  position: relative; overflow: hidden;
 }
-.cta-band h2 { color: #ffffff; font-size: 26px; }
-.cta-band p { color: rgba(255,255,255,.85); margin-top: 10px; font-size: 15px; }
-.cta-band .btn { margin-top: 24px; }
+.cta-band::before {
+  content: ""; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 60%);
+  transform: rotate(30deg); pointer-events: none;
+}
+.cta-band h2 { color: #ffffff; font-size: 28px; position: relative; z-index: 1; }
+.cta-band p { color: rgba(255,255,255,.85); margin-top: 10px; font-size: 15.5px; position: relative; z-index: 1; }
+.cta-band .btn { margin-top: 24px; position: relative; z-index: 1; border: none; box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
+.cta-band .btn:hover { box-shadow: 0 12px 24px rgba(0,0,0,0.15); transform: translateY(-2px); }
 
 /* =========================================================
    FLOATING LINE BUTTON (BRAND BLUE / ZERO RADIUS)
@@ -1010,7 +1049,7 @@ section.block.alt { background: var(--white-cool); border-top: 1px solid var(--b
    VERTICAL MULTI-COLUMN FOOTER (直式分欄結構)
    ========================================================= */
 footer {
-  background: var(--white-cool); border-top: 1px solid var(--border); color: var(--gray); padding: 64px 0 0;
+  background: transparent; border-top: 1px solid var(--border-dark); color: var(--gray); padding: 64px 0 0;
 }
 .footer-grid {
   display: grid; grid-template-columns: 2fr 1fr 1fr 1.5fr; gap: 48px; margin-bottom: 48px;
@@ -1042,7 +1081,7 @@ footer {
 .f-val:hover { color: var(--blue-brand); }
 
 .footer-bottom {
-  background: #ffffff; border-top: 1px solid var(--border); padding: 22px 0; font-size: 12.5px; color: var(--gray-light);
+  background: rgba(255,255,255,0.6); backdrop-filter: blur(8px); border-top: 1px solid var(--border); padding: 22px 0; font-size: 12.5px; color: var(--gray-light);
 }
 .footer-bottom-inner {
   display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;
@@ -1321,7 +1360,6 @@ footer {
           <a class="btn btn-outline" style="margin-top:26px;" onclick="goPage('about')">認識乃文 <span class="arrow">→</span></a>
         </div>
         <div class="img-box" style="aspect-ratio:4/3;">
-          <div class="img-badge">專業研發與後勤維護中心</div>
           <img src="assets/images/about_facility_workshop_1788937185525.jpg" alt="乃文專業維護與培訓中心" referrerpolicy="no-referrer" />
         </div>
       </div>
@@ -1598,51 +1636,56 @@ footer {
       <h1 id="productTitle"></h1>
     </div>
   </div>
-
   <section class="block">
     <div class="container">
-      <div class="two-col" style="align-items:center;">
-        <div>
-          <div class="section-eyebrow">PRODUCT OVERVIEW</div>
-          <h2 style="font-size:26px;margin-bottom:14px;">產品概述</h2>
-          <p id="productDescText" style="font-size:15px;line-height:1.8;">乃文有限公司代理之專業特種設備，具備國際認證與嚴格品質檢驗標準。如需完整技術規格書、操作手冊與專案應用資訊，歡迎與我們的專業顧問團隊聯繫洽詢。</p>
+      <div class="product-detail-layout">
+        <!-- Left: Static Image -->
+        <div class="pd-left scroll-reveal fade-up">
+          <div class="img-box pd-img-wrap">
+            <img id="productDetailImg" src="" alt="產品圖" referrerpolicy="no-referrer" />
+          </div>
         </div>
-        <div class="img-box" id="productImgBox" style="aspect-ratio:4/3;">
-          <div class="img-badge" id="productImgBadge">原廠專業認證設備</div>
-          <img id="productDetailImg" src="" alt="產品圖" referrerpolicy="no-referrer" />
+        <!-- Right: Content & Tabs -->
+        <div class="pd-right scroll-reveal fade-up" style="transition-delay: 0.1s;">
+          <div class="pd-meta" style="display: flex; gap: 12px; margin-bottom: 32px;">
+            <span class="tag"># 高機動性</span>
+            <span class="tag"># 國際認證</span>
+            <span class="tag"># 原廠保固</span>
+          </div>
+
+          <div class="pd-content-box">
+            <h3 style="font-size: 18px; color: var(--blue-deep); margin-bottom: 12px;">產品概述</h3>
+            <p id="productDescText" style="font-size: 15px; line-height: 1.8; color: var(--gray); margin-bottom: 32px;">
+              乃文有限公司代理之專業特種設備，具備國際認證與嚴格品質檢驗標準。如需完整技術規格書、操作手冊與專案應用資訊，歡迎與我們的專業顧問團隊聯繫洽詢。
+            </p>
+
+            <h3 style="font-size: 18px; color: var(--blue-deep); margin-bottom: 16px;">核心優勢</h3>
+            <div class="pd-features">
+              <div class="pd-feature-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                <span>符合國際消防與特種防護認證</span>
+              </div>
+              <div class="pd-feature-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                <span>模組化設計與快速部署能力</span>
+              </div>
+              <div class="pd-feature-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                <span>完整原廠後勤支援與定期校正</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="pd-action" style="margin-top: 40px; display: flex; gap: 16px;">
+            <a class="btn btn-primary" onclick="goPage('contact')">索取詳細規格報價 <span class="arrow">→</span></a>
+            <a class="btn btn-outline" onclick="goPage('contact')">諮詢顧問</a>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="block alt">
-    <div class="container">
-      <div class="section-head"><div class="section-eyebrow">FEATURES</div><h2>產品特色</h2></div>
-      <div class="grid-3" id="productFeatureGrid">
-        <div class="capability-item" style="text-align:left;padding:24px;">
-          <h4 style="color:var(--blue-deep);margin-bottom:6px;">國際專業認證標準</h4>
-          <span style="color:var(--gray);font-weight:400;font-size:13.5px;">符合國際消防、特種安全與防護認證規範，確保極端環境穩定性。</span>
-        </div>
-        <div class="capability-item" style="text-align:left;padding:24px;">
-          <h4 style="color:var(--blue-deep);margin-bottom:6px;">模組化與高機動性</h4>
-          <span style="color:var(--gray);font-weight:400;font-size:13.5px;">針對現場應變任務設計，具備快速部署、直覺操作與高耐用度特性。</span>
-        </div>
-        <div class="capability-item" style="text-align:left;padding:24px;">
-          <h4 style="color:var(--blue-deep);margin-bottom:6px;">完整原廠後勤支援</h4>
-          <span style="color:var(--gray);font-weight:400;font-size:13.5px;">乃文中壢維修中心提供原廠零組件供應、定期校正與保固檢修。</span>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <section class="block">
-    <div class="container">
-      <div class="section-head"><div class="section-eyebrow">APPLICATION</div><h2>適用情境</h2></div>
-      <p class="center-copy" style="line-height:1.8;">適用於各級政府消防救災、特搜應變小組、環保署毒災應變隊、國軍化學防護部隊、警政霹靂防爆隊伍，以及高科技半導體園區、石化工廠等高風險作業環境。</p>
-    </div>
-  </section>
-
-  <section class="block alt">
     <div class="container">
       <div class="section-head"><div class="section-eyebrow">RELATED PRODUCTS</div><h2>相關產品</h2></div>
       <div class="grid-3" id="relatedProductGrid"></div>
@@ -1670,7 +1713,6 @@ footer {
   <section class="block">
     <div class="container">
       <div class="grid-4" id="brandGrid"></div>
-      <div class="placeholder-note">＊ 乃文代理世界各國知名品牌，為維護原廠授權規範，正式代理廠商品牌標章將於取得正式線上發布授權後完整呈現</div>
     </div>
   </section>
 </section>
@@ -1687,7 +1729,6 @@ footer {
   <section class="block">
     <div class="container">
       <div class="grid-3" id="casesListGrid"></div>
-      <div class="placeholder-note">＊ 實際合作專案名稱與應用成效，配合政府與企業保密條款，於授權範圍內陸續更新</div>
     </div>
   </section>
 
@@ -2111,7 +2152,7 @@ function renderTags(id, list) {
 function renderCapabilities() {
   const el = document.getElementById('capabilityGrid'); if (!el) return;
   el.innerHTML = capabilities.map(c => `
-    <div class="capability-item">
+    <div class="capability-item scroll-reveal fade-up" style="transition-delay: ${c.id*0.1 || 0.1}s;">
       <div class="ic">${ICONS[c.icon]}</div>
       <span>${c.label}</span>
     </div>
@@ -2124,7 +2165,7 @@ function renderServiceCards(id) {
   el.innerHTML = keys.map((key, index) => {
     const c = CATEGORIES[key];
     return `
-    <div class="service-card-v2" onclick="goCategory('${key}')">
+    <div class="service-card-v2 scroll-reveal fade-up" style="transition-delay: ${index * 0.15}s;" onclick="goCategory('${key}')">
       <h3 class="sc-title">${c.title}</h3>
       <p class="sc-desc">${c.intro}</p>
       <div class="sc-action">了解更多</div>
@@ -2138,7 +2179,7 @@ function renderServiceOverviewCards() {
   el.innerHTML = Object.keys(CATEGORIES).map(key => {
     const c = CATEGORIES[key];
     return `
-    <div class="arrow-card" onclick="goCategory('${key}')">
+    <div class="arrow-card scroll-reveal fade-up" style="transition-delay: ${Object.keys(CATEGORIES).indexOf(key) * 0.15}s;" onclick="goCategory('${key}')">
       <div class="thumb">
         <img src="${c.image}" alt="${c.title}" referrerpolicy="no-referrer" />
       </div>
@@ -2155,7 +2196,7 @@ function renderCategoryProductGrid(catKey) {
   const el = document.getElementById('categoryProductGrid'); if (!el) return;
   const cat = CATEGORIES[catKey];
   el.innerHTML = cat.products.map(p => `
-    <div class="product-card" onclick="goProduct('${p.key}')">
+    <div class="product-card scroll-reveal fade-up" style="transition-delay: 0.15s;" onclick="goProduct('${p.key}')">
       <div class="thumb">
         <img src="${p.image}" alt="${p.title}" referrerpolicy="no-referrer" />
       </div>
@@ -2174,7 +2215,7 @@ function renderRelatedProducts(currentKey, catKey) {
   const el = document.getElementById('relatedProductGrid'); if (!el) return;
   const others = CATEGORIES[catKey].products.filter(p => p.key !== currentKey);
   el.innerHTML = others.map(p => `
-    <div class="product-card" onclick="goProduct('${p.key}')">
+    <div class="product-card scroll-reveal fade-up" style="transition-delay: 0.15s;" onclick="goProduct('${p.key}')">
       <div class="thumb">
         <img src="${p.image}" alt="${p.title}" referrerpolicy="no-referrer" />
       </div>
@@ -2194,7 +2235,7 @@ function renderCaseCards(id, limit) {
   el.innerHTML = keys.map(k => {
     const c = CASES[k];
     return `
-    <div class="arrow-card" onclick="goCase('${k}')">
+    <div class="arrow-card scroll-reveal fade-up" style="transition-delay: ${Object.keys(CASES).indexOf(k) * 0.15}s;" onclick="goCase('${k}')">
       <div class="thumb">
         <img src="${c.image}" alt="${c.title}" referrerpolicy="no-referrer" />
       </div>
