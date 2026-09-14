@@ -2132,21 +2132,7 @@ function renderServiceCards(id) {
 }
 
 function renderServiceOverviewCards() {
-  const el = document.getElementById('servicesOverviewCards'); if (!el) return;
-  el.innerHTML = Object.keys(CATEGORIES).map(key => {
-    const c = CATEGORIES[key];
-    return `
-    <div class="arrow-card scroll-reveal fade-up" style="transition-delay: ${Object.keys(CATEGORIES).indexOf(key) * 0.15}s;" onclick="goCategory('${key}')">
-      <div class="thumb">
-        <img src="${c.image}" alt="${c.title}" referrerpolicy="no-referrer" />
-      </div>
-      <div class="body">
-        <h3>${c.title}</h3>
-        <p>${c.intro}</p>
-        <div class="go">查看該領域裝備 ${ICONS.arrowRight}</div>
-      </div>
-    </div>`;
-  }).join('');
+  renderServiceCards('servicesOverviewCards');
 }
 
 function renderCategoryProductGrid(catKey) {
