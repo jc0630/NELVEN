@@ -1238,46 +1238,19 @@ footer {
         <a class="nav-link" onclick="goPage('about')">關於乃文</a>
       </div>
 
-      <!-- MULTI-LEVEL DROPDOWN MENU (多層下拉選單) -->
+      <!-- DROPDOWN MENU -->
       <div class="nav-item">
         <a class="nav-link" onclick="goPage('services')">服務項目 <span class="caret"></span></a>
         <div class="dropdown-menu">
-          <!-- Item 1: Hazmat -->
-          <div class="dropdown-item">
-            <div class="dropdown-link" onclick="goCategory('hazmat')">
-              <span>毒化災緊急應變與防護</span>
-              <span class="sub-arrow">›</span>
-            </div>
-            <div class="dropdown-sub">
-              <a class="dropdown-sub-link" onclick="goProduct('moving-tank')">移槽車</a>
-              <a class="dropdown-sub-link" onclick="goProduct('ppe')">個人防護具（PPE）</a>
-              <a class="dropdown-sub-link" onclick="goProduct('hazmat-equipment')">各式應變器材</a>
-            </div>
-          </div>
-          <!-- Item 2: Security & EOD -->
-          <div class="dropdown-item">
-            <div class="dropdown-link" onclick="goCategory('security')">
-              <span>軍警反恐偵查器材</span>
-              <span class="sub-arrow">›</span>
-            </div>
-            <div class="dropdown-sub">
-              <a class="dropdown-sub-link" onclick="goProduct('eod-robot')">爆裂物處理機器人</a>
-              <a class="dropdown-sub-link" onclick="goProduct('vehicle-barrier')">車輛阻攔系統</a>
-              <a class="dropdown-sub-link" onclick="goProduct('xray')">手提式 X光機</a>
-            </div>
-          </div>
-          <!-- Item 3: Fire Safety -->
-          <div class="dropdown-item">
-            <div class="dropdown-link" onclick="goCategory('fire')">
-              <span>消防安全設備</span>
-              <span class="sub-arrow">›</span>
-            </div>
-            <div class="dropdown-sub">
-              <a class="dropdown-sub-link" onclick="goProduct('air-compressor')">高壓空氣灌充機</a>
-              <a class="dropdown-sub-link" onclick="goProduct('scba-cabinet')">SCBA防爆充氣櫃</a>
-              <a class="dropdown-sub-link" onclick="goProduct('air-quality-test')">壓縮空氣品質檢測儀</a>
-            </div>
-          </div>
+          <a class="dropdown-link" onclick="scrollToCategory('hazmat')">
+            <span>毒化災緊急應變與防護</span>
+          </a>
+          <a class="dropdown-link" onclick="scrollToCategory('security')">
+            <span>軍警反恐偵查器材</span>
+          </a>
+          <a class="dropdown-link" onclick="scrollToCategory('fire')">
+            <span>消防安全設備</span>
+          </a>
           <!-- All Services Direct Link -->
           <a class="dropdown-footer-link" onclick="goPage('services')">查看所有服務項目總覽 →</a>
         </div>
@@ -1568,11 +1541,8 @@ footer {
       <p class="lead">三大特種應變領域，提供從評估規劃、設備代理到技術維護的完整解決方案</p>
     </div>
   </div>
-  <section class="block">
-    <div class="container">
-      <div class="grid-3" id="servicesOverviewCards"></div>
-    </div>
-  </section>
+  <!-- Three large sections will be generated here -->
+  <div id="servicesOverviewSections"></div>
   <div class="cta-band">
     <div class="container">
       <h2>不確定該從哪個領域開始？</h2>
@@ -1593,7 +1563,30 @@ footer {
   </div>
   <section class="block">
     <div class="container">
-      <div class="grid-3" id="categoryProductGrid"></div>
+      <div class="grid-3" id="categorySubcategoryGrid"></div>
+    </div>
+  </section>
+  <div class="cta-band">
+    <div class="container">
+      <h2>需要此領域的裝備規劃？</h2>
+      <p>歡迎與乃文專業顧問洽詢採購規格與系統整合建議</p>
+      <a class="btn btn-primary" style="background:#fff;color:var(--blue-brand);border-color:#fff;" onclick="goPage('contact')">洽詢採購與規劃 <span class="arrow">→</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ SUBCATEGORY DETAIL (DYNAMIC) ============================================================ -->
+<section class="page" id="page-subcategory">
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="breadcrumb" id="subcategoryBreadcrumb"></div>
+      <h1 id="subcategoryTitle"></h1>
+      <p class="lead" id="subcategoryIntro"></p>
+    </div>
+  </div>
+  <section class="block">
+    <div class="container">
+      <div class="grid-3" id="subcategoryProductGrid"></div>
     </div>
   </section>
   <div class="cta-band">
@@ -1933,11 +1926,50 @@ const CATEGORIES = {
     title: '毒化災緊急應變與防護',
     icon: 'drop',
     image: 'assets/images/cat_hazmat_response_1788937144957.jpg',
-    intro: '提供毒化災現場應變所需的移動式移槽車、化學個人防護裝備（Level A/B）與各式緊急應變器材，協助應變部隊快速建立安全作業環境。',
-    products: [
-      { key: 'moving-tank', title: '移槽車', icon: 'drop', image: 'assets/images/cat_hazmat_response_1788937144957.jpg', desc: '適用於現場槽車洩漏之高機動移槽抽吸系統，具備高防蝕與防爆認證。' },
-      { key: 'ppe', title: '個人防護具（PPE）', icon: 'shieldPerson', image: 'assets/images/prod_ppe_suit_1788937224451.jpg', desc: '進口最高等級 Level A 全氣密防護衣，耐化學腐蝕並搭配正壓呼吸系統。' },
-      { key: 'hazmat-equipment', title: '各式器材', icon: 'toolbox', image: 'assets/images/cat_hazmat_response_1788937144957.jpg', desc: '包含堵漏工具、中和劑灑佈器、化學物質檢知管與除汙充氣帳棚。' }
+    intro: '提供毒化災現場應變所需的移動式移槽車、化學個人防護裝備（Level A/B）與各式應變器材，協助應變部隊快速建立安全作業環境。',
+    subcategories: [
+      {
+        key: 'moving-tank',
+        title: '移槽車',
+        image: 'assets/images/cat_hazmat_response_1788937144957.jpg',
+        desc: '適用於現場槽車洩漏之高機動移槽抽吸系統，具備高防蝕與防爆認證。',
+        products: [
+          { key: 'moving-tank-1', title: '移槽車 樣式 1', icon: 'drop', image: 'assets/images/cat_hazmat_response_1788937144957.jpg', desc: '適用於現場槽車洩漏之高機動移槽抽吸系統，具備高防蝕與防爆認證。' },
+          { key: 'tank-heavy-2', title: '重型防爆移槽車系統 樣式 2', image: 'assets/images/cat_hazmat_response_1788937144957.jpg', desc: '大容量不鏽鋼防爆抽吸槽車，支援高壓有害液體快速轉移。' },
+          { key: 'tank-pneumatic-3', title: '氣動防爆抽吸泵 樣式 3', image: 'assets/images/cat_hazmat_response_1788937144957.jpg', desc: '無火花本質安全氣動雙隔膜泵，專為易燃化學品移槽設計。' },
+          { key: 'moving-tank-4', title: '移槽車 樣式 4', icon: 'drop', image: 'assets/images/cat_hazmat_response_1788937144957.jpg', desc: '適用於現場槽車洩漏之高機動移槽抽吸系統，具備高防蝕與防爆認證。' },
+          { key: 'tank-heavy-5', title: '重型防爆移槽車系統 樣式 5', image: 'assets/images/cat_hazmat_response_1788937144957.jpg', desc: '大容量不鏽鋼防爆抽吸槽車，支援高壓有害液體快速轉移。' },
+          { key: 'tank-pneumatic-6', title: '氣動防爆抽吸泵 樣式 6', image: 'assets/images/cat_hazmat_response_1788937144957.jpg', desc: '無火花本質安全氣動雙隔膜泵，專為易燃化學品移槽設計。' }
+        ]
+      },
+      {
+        key: 'ppe',
+        title: '個人防護具（PPE）',
+        image: 'assets/images/prod_ppe_suit_1788937224451.jpg',
+        desc: '進口最高等級 Level A 全氣密防護衣，耐化學腐蝕並搭配正壓呼吸系統。',
+        products: [
+          { key: 'ppe-1', title: '個人防護具（PPE） 樣式 1', icon: 'shieldPerson', image: 'assets/images/prod_ppe_suit_1788937224451.jpg', desc: '進口最高等級 Level A 全氣密防護衣，耐化學腐蝕並搭配正壓呼吸系統。' },
+          { key: 'ppe-level-a-2', title: 'Level A 全氣密化學防護衣 樣式 2', image: 'assets/images/prod_ppe_suit_1788937224451.jpg', desc: '頂級氣密防護，內置SCBA背負空間，全面阻絕氣體與液體噴濺。' },
+          { key: 'ppe-respirator-3', title: '全面罩正壓呼吸器 樣式 3', image: 'assets/images/prod_ppe_suit_1788937224451.jpg', desc: '高氣密防毒面罩與碳纖維高壓氣瓶組合。' },
+          { key: 'ppe-4', title: '個人防護具（PPE） 樣式 4', icon: 'shieldPerson', image: 'assets/images/prod_ppe_suit_1788937224451.jpg', desc: '進口最高等級 Level A 全氣密防護衣，耐化學腐蝕並搭配正壓呼吸系統。' },
+          { key: 'ppe-level-a-5', title: 'Level A 全氣密化學防護衣 樣式 5', image: 'assets/images/prod_ppe_suit_1788937224451.jpg', desc: '頂級氣密防護，內置SCBA背負空間，全面阻絕氣體與液體噴濺。' },
+          { key: 'ppe-respirator-6', title: '全面罩正壓呼吸器 樣式 6', image: 'assets/images/prod_ppe_suit_1788937224451.jpg', desc: '高氣密防毒面罩與碳纖維高壓氣瓶組合。' }
+        ]
+      },
+      {
+        key: 'hazmat-equipment',
+        title: '各式器材',
+        image: 'assets/images/about_facility_workshop_1788937185525.jpg',
+        desc: '包含堵漏工具、中和劑灑佈器、化學物質檢知管與除汙充氣帳棚。',
+        products: [
+          { key: 'hazmat-equipment-1', title: '各式應變器材 樣式 1', icon: 'toolbox', image: 'assets/images/cat_hazmat_response_1788937144957.jpg', desc: '包含堵漏工具、中和劑灑佈器、化學物質檢知管與除汙充氣帳棚。' },
+          { key: 'decon-tent-2', title: '除汙充氣帳棚 樣式 2', icon: 'barrier', image: 'assets/images/about_facility_workshop_1788937185525.jpg', desc: '快速展開式多段除汙淋浴帳棚，提供毒化災現場人員緊急除汙及洗消作業。' },
+          { key: 'hazmat-detector-3', title: '有毒氣體多用檢知器 樣式 3', icon: 'gauge', image: 'assets/images/cat_hazmat_response_1788937144957.jpg', desc: '高靈敏度可燃性及毒性氣體複合式偵測儀，提供即時警報與無線傳輸。' },
+          { key: 'hazmat-equipment-4', title: '各式應變器材 樣式 4', icon: 'toolbox', image: 'assets/images/cat_hazmat_response_1788937144957.jpg', desc: '包含堵漏工具、中和劑灑佈器、化學物質檢知管與除汙充氣帳棚。' },
+          { key: 'decon-tent-5', title: '除汙充氣帳棚 樣式 5', icon: 'barrier', image: 'assets/images/about_facility_workshop_1788937185525.jpg', desc: '快速展開式多段除汙淋浴帳棚，提供毒化災現場人員緊急除汙及洗消作業。' },
+          { key: 'hazmat-detector-6', title: '有毒氣體多用檢知器 樣式 6', icon: 'gauge', image: 'assets/images/cat_hazmat_response_1788937144957.jpg', desc: '高靈敏度可燃性及毒性氣體複合式偵測儀，提供即時警報與無線傳輸。' }
+        ]
+      }
     ]
   },
   'security': {
@@ -1945,21 +1977,99 @@ const CATEGORIES = {
     icon: 'robot',
     image: 'assets/images/cat_security_eod_1788937159334.jpg',
     intro: '整合爆裂物處理機器人、移動式車輛阻攔系統與高解析手提 X光機，支援軍警反恐維安高風險作業。',
-    products: [
-      { key: 'eod-robot', title: '爆裂物處理機器人', icon: 'robot', image: 'assets/images/prod_eod_robot_1788937236376.jpg', desc: '多關節機械手臂、履帶全地形越野、高畫質夜視光學系統與遠端遙控安全處置。' },
-      { key: 'vehicle-barrier', title: '車輛阻攔系統', icon: 'barrier', image: 'assets/images/cat_security_eod_1788937159334.jpg', desc: '高強度反恐防撞移動式阻車器，可快速於道路部署攔截衝撞車輛。' },
-      { key: 'xray', title: 'X光機', icon: 'scan', image: 'assets/images/cat_security_eod_1788937159334.jpg', desc: '手提式數位 X光透視偵測系統，超薄成像板即時穿透檢查可疑包裹與行李。' }
+    subcategories: [
+      {
+        key: 'eod-robot',
+        title: '爆裂物處理機器人',
+        image: 'assets/images/prod_eod_robot_1788937236376.jpg',
+        desc: '多關節機械手臂、履帶全地形越野、高畫質夜視光學系統與遠端遙控安全處置。',
+        products: [
+          { key: 'eod-robot-1', title: '爆裂物處理機器人 樣式 1', icon: 'robot', image: 'assets/images/prod_eod_robot_1788937236376.jpg', desc: '多關節機械手臂、履帶全地形越野、高畫質夜視光學系統與遠端遙控安全處置。' },
+          { key: 'robot-light-2', title: '輕型偵察機器人 樣式 2', image: 'assets/images/prod_eod_robot_1788937236376.jpg', desc: '投擲式微型偵查機器人，用於狹窄空間與敵情探察。' },
+          { key: 'bomb-blanket-3', title: '防爆毯與防爆容器 樣式 3', icon: 'shieldPerson', image: 'assets/images/prod_eod_robot_1788937236376.jpg', desc: '多層高強度芳綸纖維防爆毯與氣密防爆筒，有效抑制爆裂物碎片與衝擊波擴散。' },
+          { key: 'eod-robot-4', title: '爆裂物處理機器人 樣式 4', icon: 'robot', image: 'assets/images/prod_eod_robot_1788937236376.jpg', desc: '多關節機械手臂、履帶全地形越野、高畫質夜視光學系統與遠端遙控安全處置。' },
+          { key: 'robot-light-5', title: '輕型偵察機器人 樣式 5', image: 'assets/images/prod_eod_robot_1788937236376.jpg', desc: '投擲式微型偵查機器人，用於狹窄空間與敵情探察。' },
+          { key: 'bomb-blanket-6', title: '防爆毯與防爆容器 樣式 6', icon: 'shieldPerson', image: 'assets/images/prod_eod_robot_1788937236376.jpg', desc: '多層高強度芳綸纖維防爆毯與氣密防爆筒，有效抑制爆裂物碎片與衝擊波擴散。' }
+        ]
+      },
+      {
+        key: 'vehicle-barrier',
+        title: '車輛阻攔系統',
+        image: 'assets/images/cat_security_eod_1788937159334.jpg',
+        desc: '高強度反恐防撞移動式阻車器，可快速於道路部署攔截衝撞車輛。',
+        products: [
+          { key: 'vehicle-barrier-1', title: '車輛阻攔系統 樣式 1', icon: 'barrier', image: 'assets/images/cat_security_eod_1788937159334.jpg', desc: '高強度反恐防撞移動式阻車器，可快速於道路部署攔截衝撞車輛。' },
+          { key: 'jammer-2', title: '無人機干擾槍 樣式 2', icon: 'robot', image: 'assets/images/prod_eod_robot_1788937236376.jpg', desc: '定向射頻壓制裝備，有效阻斷無人機訊號並強制返航或降落，防範低空空防威脅。' },
+          { key: 'vehicle-barrier-3', title: '車輛阻攔系統 樣式 3', icon: 'barrier', image: 'assets/images/cat_security_eod_1788937159334.jpg', desc: '高強度反恐防撞移動式阻車器，可快速於道路部署攔截衝撞車輛。' },
+          { key: 'jammer-4', title: '無人機干擾槍 樣式 4', icon: 'robot', image: 'assets/images/prod_eod_robot_1788937236376.jpg', desc: '定向射頻壓制裝備，有效阻斷無人機訊號並強制返航或降落，防範低空空防威脅。' },
+          { key: 'vehicle-barrier-5', title: '車輛阻攔系統 樣式 5', icon: 'barrier', image: 'assets/images/cat_security_eod_1788937159334.jpg', desc: '高強度反恐防撞移動式阻車器，可快速於道路部署攔截衝撞車輛。' },
+          { key: 'jammer-6', title: '無人機干擾槍 樣式 6', icon: 'robot', image: 'assets/images/prod_eod_robot_1788937236376.jpg', desc: '定向射頻壓制裝備，有效阻斷無人機訊號並強制返航或降落，防範低空空防威脅。' }
+        ]
+      },
+      {
+        key: 'xray',
+        title: 'X光機',
+        image: 'assets/images/cat_security_eod_1788937159334.jpg',
+        desc: '手提式數位 X光透視偵測系統，超薄成像板即時穿透檢查可疑包裹與行李。',
+        products: [
+          { key: 'xray-1', title: '手提式 X光機 樣式 1', icon: 'scan', image: 'assets/images/cat_security_eod_1788937159334.jpg', desc: '手提式數位 X光透視偵測系統，超薄成像板即時穿透檢查可疑包裹與行李。' },
+          { key: 'night-vision-2', title: '紅外線夜視偵蒐鏡 樣式 2', icon: 'research', image: 'assets/images/cat_security_eod_1788937159334.jpg', desc: '軍規級微光及紅外線熱成像雙光融合偵蒐鏡，全天候遠距目標追蹤與辨識。' },
+          { key: 'xray-3', title: '手提式 X光機 樣式 3', icon: 'scan', image: 'assets/images/cat_security_eod_1788937159334.jpg', desc: '手提式數位 X光透視偵測系統，超薄成像板即時穿透檢查可疑包裹與行李。' },
+          { key: 'night-vision-4', title: '紅外線夜視偵蒐鏡 樣式 4', icon: 'research', image: 'assets/images/cat_security_eod_1788937159334.jpg', desc: '軍規級微光及紅外線熱成像雙光融合偵蒐鏡，全天候遠距目標追蹤與辨識。' },
+          { key: 'xray-5', title: '手提式 X光機 樣式 5', icon: 'scan', image: 'assets/images/cat_security_eod_1788937159334.jpg', desc: '手提式數位 X光透視偵測系統，超薄成像板即時穿透檢查可疑包裹與行李。' },
+          { key: 'night-vision-6', title: '紅外線夜視偵蒐鏡 樣式 6', icon: 'research', image: 'assets/images/cat_security_eod_1788937159334.jpg', desc: '軍規級微光及紅外線熱成像雙光融合偵蒐鏡，全天候遠距目標追蹤與辨識。' }
+        ]
+      }
     ]
   },
   'fire': {
     title: '消防安全設備',
     icon: 'tank',
     image: 'assets/images/cat_fire_safety_1788937172842.jpg',
-    intro: '提供高壓空氣灌充機、SCBA 防爆充氣櫃與壓縮空氣品質檢測儀，確保第一線人員呼吸氣源純淨與灌充安全。',
-    products: [
-      { key: 'air-compressor', title: '高壓空氣灌充機', icon: 'tank', image: 'assets/images/prod_air_compressor_1788937249691.jpg', desc: '高品質呼吸空氣高壓壓縮機，配備多重濾清器與微電腦自動壓力停機監控。' },
-      { key: 'scba-cabinet', title: 'SCBA防爆櫃', icon: 'cabinet', image: 'assets/images/cat_fire_safety_1788937172842.jpg', desc: '鋼質厚重防爆充填防護箱，灌充高壓氣瓶時提供人員最高等級安全隔離。' },
-      { key: 'air-quality-test', title: '壓縮空氣品質檢測', icon: 'gauge', image: 'assets/images/cat_fire_safety_1788937172842.jpg', desc: '即時檢測呼吸用高壓空氣中 CO、CO2、水氣及油霧殘留量，符合國際安全規範。' }
+    intro: '提供高壓空氣灌充機、SCBA防爆櫃與壓縮空氣品質檢測，確保第一線人員呼吸氣源純淨與灌充安全。',
+    subcategories: [
+      {
+        key: 'air-compressor',
+        title: '高壓空氣灌充機',
+        image: 'assets/images/prod_air_compressor_1788937249691.jpg',
+        desc: '高品質呼吸空氣高壓壓縮機，配備多重濾清器與微電腦自動壓力停機監控。',
+        products: [
+          { key: 'air-compressor-1', title: '高壓空氣灌充機 樣式 1', icon: 'tank', image: 'assets/images/prod_air_compressor_1788937249691.jpg', desc: '高品質呼吸空氣高壓壓縮機，配備多重濾清器與微電腦自動壓力停機監控。' },
+          { key: 'fire-helmet-2', title: '歐規專業消防頭盔 樣式 2', icon: 'helmet', image: 'assets/images/about_facility_workshop_1788937185525.jpg', desc: '耐高溫複合材質消防頭盔，具備防撞、抗輻射熱及整合式護目鏡面罩。' },
+          { key: 'air-compressor-3', title: '高壓空氣灌充機 樣式 3', icon: 'tank', image: 'assets/images/prod_air_compressor_1788937249691.jpg', desc: '高品質呼吸空氣高壓壓縮機，配備多重濾清器與微電腦自動壓力停機監控。' },
+          { key: 'fire-helmet-4', title: '歐規專業消防頭盔 樣式 4', icon: 'helmet', image: 'assets/images/about_facility_workshop_1788937185525.jpg', desc: '耐高溫複合材質消防頭盔，具備防撞、抗輻射熱及整合式護目鏡面罩。' },
+          { key: 'air-compressor-5', title: '高壓空氣灌充機 樣式 5', icon: 'tank', image: 'assets/images/prod_air_compressor_1788937249691.jpg', desc: '高品質呼吸空氣高壓壓縮機，配備多重濾清器與微電腦自動壓力停機監控。' },
+          { key: 'fire-helmet-6', title: '歐規專業消防頭盔 樣式 6', icon: 'helmet', image: 'assets/images/about_facility_workshop_1788937185525.jpg', desc: '耐高溫複合材質消防頭盔，具備防撞、抗輻射熱及整合式護目鏡面罩。' }
+        ]
+      },
+      {
+        key: 'scba-cabinet',
+        title: 'SCBA防爆櫃',
+        image: 'assets/images/cat_fire_safety_1788937172842.jpg',
+        desc: '鋼質厚重防爆充填防護箱，灌充高壓氣瓶時提供人員最高等級安全隔離。',
+        products: [
+          { key: 'scba-cabinet-1', title: 'SCBA防爆充氣櫃 樣式 1', icon: 'cabinet', image: 'assets/images/cat_fire_safety_1788937172842.jpg', desc: '鋼質厚重防爆充填防護箱，灌充高壓氣瓶時提供人員最高等級安全隔離。' },
+          { key: 'thermal-camera-2', title: '紅外線熱顯像儀 樣式 2', icon: 'gauge', image: 'assets/images/cat_fire_safety_1788937172842.jpg', desc: '消防專用手持式高溫熱顯像儀，協助濃煙中尋找受困者及判讀火場熱點分佈。' },
+          { key: 'scba-cabinet-3', title: 'SCBA防爆充氣櫃 樣式 3', icon: 'cabinet', image: 'assets/images/cat_fire_safety_1788937172842.jpg', desc: '鋼質厚重防爆充填防護箱，灌充高壓氣瓶時提供人員最高等級安全隔離。' },
+          { key: 'thermal-camera-4', title: '紅外線熱顯像儀 樣式 4', icon: 'gauge', image: 'assets/images/cat_fire_safety_1788937172842.jpg', desc: '消防專用手持式高溫熱顯像儀，協助濃煙中尋找受困者及判讀火場熱點分佈。' },
+          { key: 'scba-cabinet-5', title: 'SCBA防爆充氣櫃 樣式 5', icon: 'cabinet', image: 'assets/images/cat_fire_safety_1788937172842.jpg', desc: '鋼質厚重防爆充填防護箱，灌充高壓氣瓶時提供人員最高等級安全隔離。' },
+          { key: 'thermal-camera-6', title: '紅外線熱顯像儀 樣式 6', icon: 'gauge', image: 'assets/images/cat_fire_safety_1788937172842.jpg', desc: '消防專用手持式高溫熱顯像儀，協助濃煙中尋找受困者及判讀火場熱點分佈。' }
+        ]
+      },
+      {
+        key: 'air-quality-test',
+        title: '壓縮空氣品質檢測',
+        image: 'assets/images/cat_fire_safety_1788937172842.jpg',
+        desc: '即時檢測呼吸用高壓空氣中 CO、CO2、水氣及油霧殘留量，符合國際安全規範。',
+        products: [
+          { key: 'air-quality-test-1', title: '壓縮空氣品質檢測儀 樣式 1', icon: 'gauge', image: 'assets/images/cat_fire_safety_1788937172842.jpg', desc: '即時檢測呼吸用高壓空氣中 CO、CO2、水氣及油霧殘留量，符合國際安全規範。' },
+          { key: 'rescue-rope-2', title: '高空救援繩索及滑輪組 樣式 2', icon: 'cross', image: 'assets/images/prod_air_compressor_1788937249691.jpg', desc: '高強度認證尼龍繩索、安全吊帶及省力滑輪系統，支援高空與侷限空間救援。' },
+          { key: 'air-quality-test-3', title: '壓縮空氣品質檢測儀 樣式 3', icon: 'gauge', image: 'assets/images/cat_fire_safety_1788937172842.jpg', desc: '即時檢測呼吸用高壓空氣中 CO、CO2、水氣及油霧殘留量，符合國際安全規範。' },
+          { key: 'rescue-rope-4', title: '高空救援繩索及滑輪組 樣式 4', icon: 'cross', image: 'assets/images/prod_air_compressor_1788937249691.jpg', desc: '高強度認證尼龍繩索、安全吊帶及省力滑輪系統，支援高空與侷限空間救援。' },
+          { key: 'air-quality-test-5', title: '壓縮空氣品質檢測儀 樣式 5', icon: 'gauge', image: 'assets/images/cat_fire_safety_1788937172842.jpg', desc: '即時檢測呼吸用高壓空氣中 CO、CO2、水氣及油霧殘留量，符合國際安全規範。' },
+          { key: 'rescue-rope-6', title: '高空救援繩索及滑輪組 樣式 6', icon: 'cross', image: 'assets/images/prod_air_compressor_1788937249691.jpg', desc: '高強度認證尼龍繩索、安全吊帶及省力滑輪系統，支援高空與侷限空間救援。' }
+        ]
+      }
     ]
   }
 };
@@ -1967,8 +2077,17 @@ const CATEGORIES = {
 // Flatten product lookup
 const PRODUCTS = {};
 Object.keys(CATEGORIES).forEach(catKey => {
-  CATEGORIES[catKey].products.forEach(p => {
-    PRODUCTS[p.key] = { ...p, categoryKey: catKey, categoryTitle: CATEGORIES[catKey].title };
+  const cat = CATEGORIES[catKey];
+  cat.subcategories.forEach(sub => {
+    sub.products.forEach(p => {
+      PRODUCTS[p.key] = { 
+        ...p, 
+        categoryKey: catKey, 
+        categoryTitle: cat.title,
+        subKey: sub.key,
+        subTitle: sub.title 
+      };
+    });
   });
 });
 
@@ -2122,7 +2241,7 @@ function renderServiceCards(id) {
   el.innerHTML = keys.map((key, index) => {
     const c = CATEGORIES[key];
     return `
-    <div class="service-card-v2 scroll-reveal fade-up" style="transition-delay: ${index * 0.15}s;" onclick="goCategory('${key}')">
+    <div class="service-card-v2 scroll-reveal fade-up" style="transition-delay: ${index * 0.15}s;" onclick="scrollToCategory('${key}')">
       <h3 class="sc-title">${c.title}</h3>
       <p class="sc-desc">${c.intro}</p>
       <div class="sc-action">了解更多</div>
@@ -2132,13 +2251,94 @@ function renderServiceCards(id) {
 }
 
 function renderServiceOverviewCards() {
-  renderServiceCards('servicesOverviewCards');
+  const el = document.getElementById('servicesOverviewSections'); if (!el) return;
+  el.innerHTML = Object.keys(CATEGORIES).map((key, catIdx) => {
+    const c = CATEGORIES[key];
+    const isAlt = catIdx % 2 !== 0;
+    const blockClass = isAlt ? 'block alt' : 'block';
+    return `
+    <section class="${blockClass} scroll-reveal fade-up" id="service-section-${key}" style="scroll-margin-top: 80px; padding: 100px 0; border-bottom: 1px solid var(--border);">
+      <div class="container">
+        <div style="text-align: center; margin-bottom: 60px;">
+          <h2 style="font-size: 32px; color: var(--blue-deep); margin-bottom: 16px;">${c.title}</h2>
+          <p style="font-size: 16px; color: var(--gray); max-width: 800px; margin: 0 auto; line-height: 1.8;">${c.intro}</p>
+        </div>
+        <div class="grid-3">
+          ${c.subcategories.map((sub, subIdx) => `
+            <div class="arrow-card scroll-reveal fade-up" style="transition-delay: ${(subIdx * 0.1)}s; cursor: pointer; display: flex; flex-direction: column; height: 100%;" onclick="goSubCategory('${sub.key}')">
+              <div class="thumb" style="flex: none;">
+                <img src="${sub.image}" alt="${sub.title}" referrerpolicy="no-referrer" style="width: 100%; height: 240px; object-fit: cover;" />
+              </div>
+              <div class="body" style="flex: 1; display: flex; flex-direction: column;">
+                <h3>${sub.title}</h3>
+                <p style="flex: 1; color: var(--gray); line-height: 1.6;">${sub.desc}</p>
+                <div class="go" style="margin-top: auto;">查看更多產品 ${ICONS.arrowRight}</div>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    </section>`;
+  }).join('');
+}
+
+function scrollToCategory(key) {
+  goPage('services');
+  setTimeout(() => {
+    const el = document.getElementById('service-section-' + key);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, 100);
+}
+
+function goSubCategory(subKey) {
+  let foundSub = null;
+  let foundCat = null;
+  let parentCatKey = '';
+  
+  Object.keys(CATEGORIES).forEach(catKey => {
+    const cat = CATEGORIES[catKey];
+    cat.subcategories.forEach(sub => {
+      if (sub.key === subKey) {
+        foundSub = sub;
+        foundCat = cat;
+        parentCatKey = catKey;
+      }
+    });
+  });
+
+  if (!foundSub) return;
+
+  document.getElementById('subcategoryTitle').textContent = foundSub.title;
+  document.getElementById('subcategoryIntro').textContent = foundSub.desc;
+  document.getElementById('subcategoryBreadcrumb').innerHTML =
+    `<a onclick="goHome()">首頁</a><span class="sep">/</span><a onclick="goPage('services')">服務項目</a><span class="sep">/</span><a onclick="goCategory('${parentCatKey}')">${foundCat.title}</a><span class="sep">/</span><span class="current">${foundSub.title}</span>`;
+  
+  const gridEl = document.getElementById('subcategoryProductGrid');
+  if (gridEl) {
+    gridEl.innerHTML = foundSub.products.map((p, pIdx) => `
+      <div class="product-card scroll-reveal fade-up" style="transition-delay: ${(pIdx * 0.1)}s;" onclick="goProduct('${p.key}')">
+        <div class="thumb">
+          <img src="${p.image}" alt="${p.title}" referrerpolicy="no-referrer" />
+        </div>
+        <div class="card-banner">
+          ${p.title}
+        </div>
+      </div>
+    `).join('');
+  }
+
+  showPage('subcategory');
+  history.replaceState(null, '', '#subcategory/' + subKey);
 }
 
 function renderCategoryProductGrid(catKey) {
   const el = document.getElementById('categoryProductGrid'); if (!el) return;
   const cat = CATEGORIES[catKey];
-  el.innerHTML = cat.products.map(p => `
+  let allProds = [];
+  cat.subcategories.forEach(sub => allProds.push(...sub.products));
+  el.innerHTML = allProds.map(p => `
     <div class="product-card scroll-reveal fade-up" style="transition-delay: 0.15s;" onclick="goProduct('${p.key}')">
       <div class="thumb">
         <img src="${p.image}" alt="${p.title}" referrerpolicy="no-referrer" />
@@ -2152,8 +2352,16 @@ function renderCategoryProductGrid(catKey) {
 
 function renderRelatedProducts(currentKey, catKey) {
   const el = document.getElementById('relatedProductGrid'); if (!el) return;
-  const others = CATEGORIES[catKey].products.filter(p => p.key !== currentKey);
-  el.innerHTML = others.map(p => `
+  const cat = CATEGORIES[catKey];
+  let allProds = [];
+  cat.subcategories.forEach(sub => {
+    sub.products.forEach(p => {
+      if (p.key !== currentKey) {
+        allProds.push({ ...p, categoryKey: catKey, categoryTitle: cat.title });
+      }
+    });
+  });
+  el.innerHTML = allProds.slice(0, 3).map(p => `
     <div class="product-card scroll-reveal fade-up" style="transition-delay: 0.15s;" onclick="goProduct('${p.key}')">
       <div class="thumb">
         <img src="${p.image}" alt="${p.title}" referrerpolicy="no-referrer" />
@@ -2204,16 +2412,7 @@ function renderMobileServicesAccordion() {
   let html = `<a class="mnav-prod" style="font-weight:700;color:var(--blue-brand);" onclick="goPage('services')">查看所有服務項目總覽 →</a>`;
   html += Object.keys(CATEGORIES).map(key => {
     const c = CATEGORIES[key];
-    return `
-    <div class="mnav-cat">
-      <div class="mnav-cat-title" onclick="toggleMnavCat(this)">
-        <span onclick="event.stopPropagation();goCategory('${key}')">${c.title}</span>
-        <span class="chev"></span>
-      </div>
-      <div class="mnav-sub">
-        ${c.products.map(p => `<a class="mnav-prod" onclick="goProduct('${p.key}')">${p.title}</a>`).join('')}
-      </div>
-    </div>`;
+    return `<a class="mnav-prod" onclick="scrollToCategory('${key}')">${c.title}</a>`;
   }).join('');
   el.innerHTML = html;
 }
@@ -2254,7 +2453,23 @@ function goCategory(key) {
   document.getElementById('categoryIntro').textContent = cat.intro;
   document.getElementById('categoryBreadcrumb').innerHTML =
     `<a onclick="goHome()">首頁</a><span class="sep">/</span><a onclick="goPage('services')">服務項目</a><span class="sep">/</span><span class="current">${cat.title}</span>`;
-  renderCategoryProductGrid(key);
+  
+  const el = document.getElementById('categorySubcategoryGrid');
+  if (el) {
+    el.innerHTML = cat.subcategories.map((sub, subIdx) => `
+      <div class="arrow-card scroll-reveal fade-up" style="transition-delay: ${(subIdx * 0.1)}s; cursor: pointer; display: flex; flex-direction: column; height: 100%;" onclick="goSubCategory('${sub.key}')">
+        <div class="thumb" style="flex: none;">
+          <img src="${sub.image}" alt="${sub.title}" referrerpolicy="no-referrer" style="width: 100%; height: 240px; object-fit: cover;" />
+        </div>
+        <div class="body" style="flex: 1; display: flex; flex-direction: column;">
+          <h3>${sub.title}</h3>
+          <p style="flex: 1;">${sub.desc}</p>
+          <div class="go">查看更多產品 ${ICONS.arrowRight}</div>
+        </div>
+      </div>
+    `).join('');
+  }
+  
   showPage('category');
   history.replaceState(null, '', '#category/' + key);
 }
@@ -2264,7 +2479,7 @@ function goProduct(key) {
   const cat = CATEGORIES[p.categoryKey];
   document.getElementById('productTitle').textContent = p.title;
   document.getElementById('productBreadcrumb').innerHTML =
-    `<a onclick="goHome()">首頁</a><span class="sep">/</span><a onclick="goPage('services')">服務項目</a><span class="sep">/</span><a onclick="goCategory('${p.categoryKey}')">${cat.title}</a><span class="sep">/</span><span class="current">${p.title}</span>`;
+    `<a onclick="goHome()">首頁</a><span class="sep">/</span><a onclick="goPage('services')">服務項目</a><span class="sep">/</span><a onclick="goCategory('${p.categoryKey}')">${cat.title}</a><span class="sep">/</span><a onclick="goSubCategory('${p.subKey}')">${p.subTitle}</a><span class="sep">/</span><span class="current">${p.title}</span>`;
   
   const descEl = document.getElementById('productDescText');
   if (descEl) {
@@ -2398,7 +2613,8 @@ function initRouteFromHash() {
   const hash = window.location.hash.replace('#', '');
   if (!hash) { return; }
   const [kind, key] = hash.split('/');
-  if (kind === 'category' && key) { goCategory(key); }
+  if (kind === 'subcategory' && key) { goSubCategory(key); }
+  else if (kind === 'category' && key) { scrollToCategory(key); }
   else if (kind === 'product' && key) { goProduct(key); }
   else if (kind === 'case' && key) { goCase(key); }
   else if (kind) { showPage(kind); }
