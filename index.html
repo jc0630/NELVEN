@@ -489,18 +489,36 @@ section.block.alt { background: linear-gradient(180deg, rgba(248,250,252,0) 0%, 
 /* Product Card with Photo Thumbnail */
 .product-card {
   border-radius: var(--radius-lg);
-  display: block; border: 1px solid rgba(255,255,255,0.6); background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px);
+  display: block; border: 1px solid var(--border); background: #ffffff;
   box-shadow: var(--shadow-sm); transition: border-color .2s var(--ease), box-shadow .2s var(--ease), transform .2s ease;
   cursor: pointer; overflow: hidden;
 }
-.product-card:hover { border-color: var(--blue-brand); box-shadow: var(--shadow-md); transform: translateY(-3px); }
-.product-card .thumb { aspect-ratio: 4/3; position: relative; overflow: hidden; background: var(--blue-verylight); border-bottom: 1px solid var(--border); }
+.product-card:hover { border-color: var(--blue-brand); box-shadow: var(--shadow-md); transform: translateY(-4px); }
+.product-card .thumb { aspect-ratio: 4/3; position: relative; overflow: hidden; background: #f8fafc; }
 .product-card .thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s var(--ease); }
-.product-card:hover .thumb img { transform: scale(1.06); }
-.product-card .body { padding: 18px 20px; display: flex; align-items: center; justify-content: space-between; gap: 10px; background: transparent; }
-.product-card h3 { font-size: 15.5px; color: var(--blue-deep); }
-.product-card svg { width: 16px; height: 16px; color: var(--blue-brand); flex-shrink: 0; transition: transform .2s var(--ease); }
-.product-card:hover svg { transform: translateX(4px); }
+.product-card:hover .thumb img { transform: scale(1.05); }
+.product-card .card-banner {
+  position: relative;
+  background: #003366;
+  color: #ffffff;
+  padding: 18px 20px;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+.product-card .card-banner::before {
+  content: "";
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 8px solid #003366;
+}
 
 /* =========================================================
    TAGS & CAPABILITIES (ZERO RADIUS)
@@ -1007,36 +1025,6 @@ section.block.alt { background: linear-gradient(180deg, rgba(248,250,252,0) 0%, 
 .cta-band p { color: rgba(255,255,255,.85); margin-top: 10px; font-size: 15.5px; position: relative; z-index: 1; }
 .cta-band .btn { margin-top: 24px; position: relative; z-index: 1; border: none; box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
 .cta-band .btn:hover { box-shadow: 0 12px 24px rgba(0,0,0,0.15); transform: translateY(-2px); }
-
-/* =========================================================
-   FLOATING LINE BUTTON (BRAND BLUE / ZERO RADIUS)
-   ========================================================= */
-.line-float {
-  border-radius: 50%;
-  position: fixed; right: 28px; bottom: 28px; z-index: 900; width: 56px; height: 56px;
-  background: var(--blue-deep); color: #ffffff; border: 2px solid var(--blue-brand);
-  display: flex; align-items: center; justify-content: center;
-  box-shadow: 0 8px 24px rgba(30,58,138,0.3); transition: transform .2s ease, background-color .2s ease, border-color .2s ease;
-  cursor: pointer;
-}
-.line-float:hover {
-  transform: translateY(-3px); background: var(--blue-brand); border-color: var(--blue-light);
-}
-.line-float svg { width: 28px; height: 28px; }
-
-.line-toast {
-  border-radius: var(--radius-md);
-  position: fixed; right: 28px; bottom: 94px; z-index: 901;
-  background: var(--blue-deep); color: #ffffff; border: 1px solid var(--blue-brand);
-  padding: 10px 16px; font-size: 13px; font-weight: 500; box-shadow: var(--shadow-md);
-  opacity: 0; transform: translateY(6px); pointer-events: none;
-  transition: opacity .25s ease, transform .25s ease;
-}
-.line-toast.show { opacity: 1; transform: translateY(0); }
-@media(max-width: 640px){
-  .line-float { right: 16px; bottom: calc(20px + env(safe-area-inset-bottom)); width: 50px; height: 50px; }
-  .line-toast { right: 16px; bottom: calc(80px + env(safe-area-inset-bottom)); }
-}
 
 /* =========================================================
    VERTICAL MULTI-COLUMN FOOTER (直式分欄結構)
@@ -1819,14 +1807,6 @@ footer {
   </section>
 </section>
 
-<!-- BRAND-THEMED FLOATING LINE BUTTON (ZERO RADIUS) -->
-<button class="line-float" id="lineFloat" aria-label="乃文官方 LINE 諮詢通道">
-  <svg viewBox="0 0 24 24" fill="currentColor">
-    <path d="M12 2C6.48 2 2 5.7 2 10.2c0 3.9 3.36 7.15 7.9 7.82-.11.4-.71 2.46-.81 2.84 0 0-.02.13.07.18.09.05.19.01.19.01.25-.03 2.88-1.9 3.35-2.24.42.06.86.09 1.3.09 5.52 0 10-3.7 10-8.2C24 5.7 19.52 2 14 2h-2z"/>
-  </svg>
-</button>
-<div class="line-toast" id="lineToast">乃文官方 LINE 線上諮詢即將開通（歡迎先以電話或表單聯繫）</div>
-
 <!-- ============================================================ VERTICAL MULTI-COLUMN FOOTER ============================================================ -->
 <footer>
   <div class="container">
@@ -1847,9 +1827,6 @@ footer {
           <li><a onclick="goCategory('hazmat')">毒化災緊急應變與防護</a></li>
           <li><a onclick="goCategory('security')">軍警反恐偵查器材</a></li>
           <li><a onclick="goCategory('fire')">消防安全設備</a></li>
-          <li><a onclick="goPage('services')">服務項目總覽</a></li>
-          <li><a onclick="goPage('about')">專業教育訓練</a></li>
-          <li><a onclick="goPage('about')">維修與後勤中心</a></li>
         </ul>
       </div>
 
@@ -1859,10 +1836,10 @@ footer {
         <ul class="footer-list">
           <li><a onclick="goHome()">首頁</a></li>
           <li><a onclick="goPage('about')">關於乃文</a></li>
+          <li><a onclick="goPage('services')">服務項目</a></li>
           <li><a onclick="goPage('brands')">品牌代理</a></li>
           <li><a onclick="goPage('cases')">客戶實績</a></li>
           <li><a onclick="goPage('contact')">聯絡我們</a></li>
-          <li><a href="#" onclick="return false;">隱私權政策</a></li>
         </ul>
       </div>
 
@@ -2180,12 +2157,8 @@ function renderCategoryProductGrid(catKey) {
       <div class="thumb">
         <img src="${p.image}" alt="${p.title}" referrerpolicy="no-referrer" />
       </div>
-      <div class="body">
-        <div>
-          <h3>${p.title}</h3>
-          <p style="font-size:12.5px;color:var(--gray);margin-top:2px;">${p.desc}</p>
-        </div>
-        ${ICONS.arrowRight}
+      <div class="card-banner">
+        ${p.title}
       </div>
     </div>
   `).join('');
@@ -2199,11 +2172,8 @@ function renderRelatedProducts(currentKey, catKey) {
       <div class="thumb">
         <img src="${p.image}" alt="${p.title}" referrerpolicy="no-referrer" />
       </div>
-      <div class="body">
-        <div>
-          <h3>${p.title}</h3>
-        </div>
-        ${ICONS.arrowRight}
+      <div class="card-banner">
+        ${p.title}
       </div>
     </div>
   `).join('');
@@ -2471,18 +2441,6 @@ function toggleMnavCat(elm) {
   sub.classList.toggle('open');
   elm.querySelector('.chev').style.transform = sub.classList.contains('open') ? 'rotate(-135deg)' : 'rotate(45deg)';
 }
-
-/* ============================================================
-   LINE FLOATING BUTTON
-   ============================================================ */
-const lineFloat = document.getElementById('lineFloat');
-const lineToast = document.getElementById('lineToast');
-let lineToastTimer;
-lineFloat.addEventListener('click', () => {
-  lineToast.classList.add('show');
-  clearTimeout(lineToastTimer);
-  lineToastTimer = setTimeout(() => lineToast.classList.remove('show'), 3000);
-});
 
 /* ============================================================
    CONTACT FORM
